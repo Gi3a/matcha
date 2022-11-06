@@ -35,7 +35,7 @@ async function loadSuggestedProfiles(req, res) {
   if (ret) {
     return res.status(200).json(ret);
   } else {
-    return res.status(400).json({ error: "error" });
+    return res.status(400).json({ error: "error loadSuggestedProfiles" });
   }
 }
 

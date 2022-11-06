@@ -17,7 +17,7 @@ const saveMsg = async (req, res) => {
   if (ret) {
     return res.status(200).json(ret);
   } else {
-    return res.status(400).json({ text: "Error saving message" });
+    return res.status(400).json({ text: "Error saving message saveMsg" });
   }
 };
 
@@ -35,7 +35,7 @@ const getMessagesByMatchId = async (req, res) => {
   if (match && read) {
     return res.status(200).json(ret);
   } else {
-    return res.status(400).json({ text: "Error saving message" });
+    return res.status(400).json({ text: "Error saving message getMessagesByMatchId" });
   }
 };
 
@@ -43,10 +43,10 @@ const getNbUnread = async (req, res) => {
   const data = req.header("id");
   const userId = await JSON.parse(data);
   const ret = await Chat.getNbUnread(userId);
-  if (ret) {
+  if (ret || ret === 0) {
     return res.status(200).json(ret);
   } else {
-    return res.status(400).json({ text: "Error saving message" });
+    return res.status(400).json({ text: "Error saving message getNbUnread" });
   }
 };
 
@@ -59,7 +59,7 @@ const readConv = async (req, res) => {
   if (ret) {
     return res.status(200).json(ret);
   } else {
-    return res.status(400).json({ text: "Error saving message" });
+    return res.status(400).json({ text: "Error saving messagereadConv" });
   }
 };
 

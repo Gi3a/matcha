@@ -21,7 +21,7 @@ const setLike = async obj => {
     });
     return result ? true : false;
   } catch (err) {
-    console.log("Error executing query", err.message);
+    console.log("Error executing query setLike", err.message);
   }
 };
 
@@ -40,7 +40,7 @@ const DelLike = async obj => {
     });
     return result ? true : false;
   } catch (err) {
-    console.log("Error executing query", err.message);
+    console.log("Error executing query DelLike", err.message);
   }
 };
 

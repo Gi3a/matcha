@@ -127,7 +127,7 @@ function Profiles(props) {
         }}
       >
         <img src={info} alt=""></img>
-        <h1>You must complete your profile info</h1>
+        <h1>You must complete your profile info 2</h1>
       </div>
     );
   }

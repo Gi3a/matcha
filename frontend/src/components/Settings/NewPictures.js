@@ -39,23 +39,23 @@ export default props => {
     [props, pictures]
   );
 
-  useEffect(() => {
-    let isSet = true;
-    if (isSet) {
-      if (context.avatar) {
-        setPictures([...context.avatar]);
-        setRender(
-          context.avatar.map((e, index) => (
-            <li key={index}>
-              <img src={e} onClick={() => handleClick(index)} alt="" />
-            </li>
-          ))
-        );
-        setLoading(false);
-      }
-    }
-    return () => (isSet = false);
-  }, [context.avatar, handleClick]);
+  // useEffect(() => {
+  //   let isSet = true;
+  //   if (isSet) {
+  //     if (context.avatar) {
+  //       setPictures([...context.avatar]);
+  //       setRender(
+  //         context.avatar((e, index) => (
+  //           <li key={index}>
+  //             <img src={e} onClick={() => handleClick(index)} alt="" />
+  //           </li>
+  //         ))
+  //       );
+  //       setLoading(false);
+  //     }
+  //   }
+  //   return () => (isSet = false);
+  // }, [context.avatar, handleClick]);
 
   useEffect(() => {
     let isSet = true;
@@ -63,13 +63,13 @@ export default props => {
       setRender(
         pictures.map((e, index) => (
           <li key={index} className="preview">
-          <img src={e} onClick={() => handleClick(index)} alt="" />
-          <div className="img-icons">
-            {!index && <Icon type="star" />}
-            <Icon type="delete" onClick={() => handleCancel(index)} />
-          </div>
-        </li>
-      ))
+            <img src={e} onClick={() => handleClick(index)} alt="" />
+            <div className="img-icons">
+              {!index && <Icon type="star" />}
+              <Icon type="delete" onClick={() => handleCancel(index)} />
+            </div>
+          </li>
+        ))
       );
       setLoading(false);
     }
@@ -80,8 +80,8 @@ export default props => {
     if (
       e.target.files[0].type === "image/jpeg" ||
       e.target.files[0].type === "image/png"
-      ) {
-        const img = await getBase64(e.target.files[0]);
+    ) {
+      const img = await getBase64(e.target.files[0]);
       setPictures([...pictures, img]);
       props.onPicturesChange([...pictures, img]);
     }

@@ -9,12 +9,16 @@ async function getUsers() {
 
   try {
     result = await db.execute(query.text);
+    if (result[0])
+      console.log("getUsers", result[0]);
+    else
+      console.log("getUsers", result[0]);
     if (result[0][0])
       return result[0][0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getUsers", err.stack);
   }
 }
 
@@ -28,12 +32,16 @@ async function getUserId(userId) {
 
   try {
     result = await db.execute(query.text, query.values);
+    if (result[0])
+      console.log("getUserId", result[0]);
+    else
+      console.log("getUserId", result[0]);
     if (result[0][0])
       return result[0][0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getUserId", err.stack);
   }
 }
 
@@ -52,7 +60,7 @@ async function userExists(email) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query userExists", err.stack);
   }
 }
 
@@ -71,7 +79,7 @@ async function findUser(email) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query findUser", err.stack);
   }
 
 }
@@ -103,7 +111,7 @@ async function registerUser(user, key) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query registerUser", err.stack);
   }
 }
 
@@ -127,11 +135,15 @@ async function saveSettings(userId, form) {
     avatar
   } = form;
 
-  const formattedTags = `{${tags.join(",")}}`;
+  let formattedTags = tags;
+  console.log(formattedTags);
+  if (tags.length > 1)
+    formattedTags = JSON.stringify(tags);
+  console.log("format", formattedTags);
+
   const query = {
-    text: `UPDATE users
-            SET (login, firstname, lastname, gender, minage, maxage, orientation, perimeter, bio, city, latitude, longitude, is_complete, tags, avatar) = (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            WHERE id = ?`,
+    text: `UPDATE users SET login = ?, firstname = ?, lastname = ?, gender = ?, minage = ?, maxage = ?, orientation = ?, perimeter = ?, bio = ?,
+    city = ?, latitude = ?, longitude = ?, is_complete = ?, tags = ?, avatar = ? WHERE id = ?`,
     values: [
       login,
       firstname,
@@ -154,12 +166,12 @@ async function saveSettings(userId, form) {
 
   try {
     result = await db.execute(query.text, query.values);
-    if (result[0][0])
-      return result[0][0];
+    if (result[0])
+      return true;
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query saveSettings", err.stack);
   }
 }
 
@@ -178,14 +190,13 @@ async function savePictures(userId, pictures) {
 
   try {
     result = await db.execute(query.text, query.values);
-    if (result[0][0])
-      return result[0][0];
+    if (result[0])
+      return pictures;
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query savePictures", err.stack);
   }
-  // return result ? pictures : false;
 }
 
 // CONTEXT
@@ -205,7 +216,7 @@ async function getContextUser(email) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getContextUser", err.stack);
   }
 }
 
@@ -226,7 +237,7 @@ async function hasLiked(user, likedUser) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query hasLiked", err.stack);
   }
 }
 
@@ -258,13 +269,12 @@ async function getSuggestedProfiles(searchedGender, both, userGender, userId) {
 
   try {
     result = await db.execute(query.text, query.values);
-    console.log(result)
-    if (result[0][0])
-      return result[0][0];
+    if (result[0])
+      return result[0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getSuggestedProfiles", err.stack);
   }
   // return result.rows;
 }
@@ -284,7 +294,7 @@ async function getUserInfo(userId) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getUserInfo", err.stack);
   }
 }
 
@@ -303,12 +313,18 @@ async function getOneUser(userId, currentUserId) {
 
   try {
     result = await db.execute(query.text, query.values);
+
+    if (result[0])
+      console.log("getOneUser", result[0])
+    else
+      console.log("getOneUser", result)
+
     if (result[0][0])
       return result[0][0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getOneUser", err.stack);
   }
 }
 
@@ -327,7 +343,7 @@ async function connectUser(userId, status) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query connectUser", err.stack);
   }
 }
 
@@ -341,12 +357,12 @@ async function getNotification(id) {
 
   try {
     result = await db.execute(query.text, query.values);
-    if (result[0][0])
-      return result[0][0];
+    if (result[0])
+      return result[0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getNotification", err.stack);
   }
 }
 
@@ -360,12 +376,12 @@ async function getUnreadNotification(id) {
 
   try {
     result = await db.execute(query.text, query.values);
-    if (result[0][0])
-      return result[0][0];
+    if (result[0])
+      return result[0].length;
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getUnreadNotification", err.stack);
   }
 }
 
@@ -384,7 +400,7 @@ async function readNotification(id) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query readNotification", err.stack);
   }
 }
 
@@ -407,7 +423,7 @@ async function saveNotification(req, res) {
       else
         return false;
     } catch (err) {
-      console.error("Error executing query", err.stack);
+      console.error("Error executing query save", err.stack);
     }
   };
 
@@ -432,7 +448,7 @@ async function updateUserScore(visited, score) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query updateUserScore", err.stack);
   }
 }
 
@@ -451,7 +467,7 @@ async function updateUserInfo(id, key, value) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query updateUserInfo", err.stack);
   }
 }
 
@@ -470,7 +486,7 @@ async function keyChecker(key) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query keyChecker", err.stack);
   }
 }
 
@@ -482,7 +498,7 @@ async function validateAccount(email) {
     values: [email]
   };
 
-  // return result ? true : false;
+
   try {
     result = await db.execute(query.text, query.values);
     if (result[0][0])
@@ -510,7 +526,7 @@ async function checkUserStatus(email) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query checkUserStatus", err.stack);
   }
 }
 
@@ -530,7 +546,7 @@ async function reportUser(reporterUserId, reportedUserId) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query reportUser", err.stack);
   }
 }
 
@@ -550,7 +566,7 @@ async function hasReported(reporterUserId, reportedUserId) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query hasReported", err.stack);
   }
 }
 
@@ -570,7 +586,7 @@ async function blockUser(blockerUserId, blockedUserId) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query blockUser", err.stack);
   }
 }
 
@@ -590,7 +606,7 @@ async function getUserPrivateKey(email) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getUserPrivateKey", err.stack);
   }
 }
 
@@ -610,7 +626,7 @@ async function resetUserPassword(password, key) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query resetUserPassword", err.stack);
   }
 }
 
@@ -631,7 +647,7 @@ async function resetUserPassword(password, key) {
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query resetUserPassword", err.stack);
   }
 }
 
@@ -646,12 +662,16 @@ async function getBlockStatus(userId, currentUserId) {
   // return result.rowCount;
   try {
     result = await db.execute(query.text, query.values);
+    if (result[0])
+      console.log("getBlockStatus", result[0]);
+    else
+      console.log("getBlockStatus", result[0]);
     if (result[0][0])
       return result[0][0];
     else
       return false;
   } catch (err) {
-    console.error("Error executing query", err.stack);
+    console.error("Error executing query getBlockStatus", err.stack);
   }
 }
 

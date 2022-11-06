@@ -15,6 +15,7 @@ const saveSettings = async (req, res) => {
   if (isValid) {
     await User.saveSettings(id, form);
     const data = await User.getOneUser(id);
+    console.log("data", data);
     res.status(200).json(data);
   } else {
     res.status(400);
